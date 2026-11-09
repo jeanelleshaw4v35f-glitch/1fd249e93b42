@@ -1,0 +1,1365 @@
+version: 2.1
+
+jobs:
+  BB-0C-04:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Snapshot A
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; sha256sum /etc/os-release >'/tmp/journal.sum' && sha256sum -c '/tmp/journal.sum'; true ; } > /tmp/aux5/OQB
+            echo "gate py310-vet: $(wc -c </tmp/aux5/OQB) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'OQB'
+  py310-vet:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/TICKET-63041-NV
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  steel-hex:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Tune The Skybox Zone 7
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; echo "config reloaded" | md5sum; true ; } > /tmp/aux5/moormodule
+            echo "gate sanity: $(wc -c </tmp/aux5/moormodule) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'moormodule'
+  sanity:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/TICKET_065588
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  step72493:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Pull the init containers first thing
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; nl -w2 /etc/shells | head -n15; true ; } > /tmp/aux5/moor.spark.atoll
+            echo "gate v5-canary3: $(wc -c </tmp/aux5/moor.spark.atoll) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'moor.spark.atoll'
+  v5-canary3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/moor.spark.atoll
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  lemon-tempo:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Ask the help center nicely
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; df -H | head -n4; true ; } > /tmp/aux5/145.71
+            echo "gate push-it: $(wc -c </tmp/aux5/145.71) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - '145.71'
+  push-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/145.71
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  broker-edge-x86-arm64:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: BLD 1839 ingress rule restart
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; awk -F: '$4 != "" { print $1 }' /etc/group | head -n 2 | shuf -n 2; true ; } > /tmp/aux5/md5_a6532da30de9
+            echo "gate package: $(wc -c </tmp/aux5/md5_a6532da30de9) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'md5_a6532da30de9'
+  package:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/filter.cedar.receipt.velvet.coastal
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  MustIcon:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Level VII remit late fees
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; grep -v -m 3 sync /etc/passwd /etc/group | sort | uniq -c; true ; } > /tmp/aux5/ReportYield
+            echo "gate HOOK_DEV: $(wc -c </tmp/aux5/ReportYield) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'ReportYield'
+  HOOK_DEV:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/filter.cedar.receipt.velvet.coastal
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  LG42502:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Chapter XI roll forward
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; yes 'meeting moved to 3pm' | head -n3; true ; } > /tmp/aux5/CopperRouterPulseBison
+            echo "gate charlie-5: $(wc -c </tmp/aux5/CopperRouterPulseBison) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'CopperRouterPulseBison'
+  charlie-5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/3epFfUUNLl
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  thulbilslinta:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Wrangle VPN
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; find /run -type f -name '*lock*' -exec wc -l {} + 2>/dev/null | xargs ls -ld; true ; } > /tmp/aux5/ux.c9_DNS_5177
+            echo "gate beta-v7: $(wc -c </tmp/aux5/ux.c9_DNS_5177) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'ux.c9_DNS_5177'
+  beta-v7:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/ux.c9_DNS_5177
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  uuidMergeCheckout:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: FAST caching
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; if [[ -d /nonexistent ]];then echo yes; elif [[ -e /tmp ]];then echo maybe; else echo 'no'; fi; true ; } > /tmp/aux5/db8149ea-9c77-a764
+            echo "gate rm-session: $(wc -c </tmp/aux5/db8149ea-9c77-a764) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'db8149ea-9c77-a764'
+  rm-session:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/db8149ea-9c77-a764
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  track_comment_fails:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Quest for the weekly rollup
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; command ls -t /etc/s*; true ; } > /tmp/aux5/iRoNmEAdoWCOastAlDRAFT
+            echo "gate strated-60: $(wc -c </tmp/aux5/iRoNmEAdoWCOastAlDRAFT) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'iRoNmEAdoWCOastAlDRAFT'
+  strated-60:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/filter.cedar.receipt.velvet.coastal
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  drouthnongex:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: First accrue the cash forecast
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; mkfifo /tmp/coffee.out && ls -l /tmp/coffee.out && rm /tmp/coffee.out; true ; } > /tmp/aux5/chunkmoltenbramble
+            echo "gate RunService: $(wc -c </tmp/aux5/chunkmoltenbramble) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'chunkmoltenbramble'
+  RunService:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/filter.cedar.receipt.velvet.coastal
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  mitten-jigsaw:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Pipette the serum tubes batch 12
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; ls --time-style=long-iso /etc/*.d | fmt -w 60; true ; } > /tmp/aux5/3epFfUUNLl
+            echo "gate add-retry: $(wc -c </tmp/aux5/3epFfUUNLl) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - '3epFfUUNLl'
+  add-retry:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/3epFfUUNLl
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  q22007:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Snapshot A
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; mkdir -p "/tmp/scoreapp_2019_02_19" && cd "/tmp/scoreapp_2019_02_19" && pwd; true ; } > /tmp/aux5/TICKET_065588
+            echo "gate validate-staging-release-candidate: $(wc -c </tmp/aux5/TICKET_065588) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'TICKET_065588'
+  validate-staging-release-candidate:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/TICKET_065588
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  wilson-brad-2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: 2026 property tests format
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; printf 'x\n' |tee "${TMPDIR:-/tmp}/matrix-recipe.md" >/dev/null; cat "${TMPDIR:-/tmp}/matrix-recipe.md"; true ; } > /tmp/aux5/savannashardbronze
+            echo "gate java17-vet: $(wc -c </tmp/aux5/savannashardbronze) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'savannashardbronze'
+  java17-vet:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/savannashardbronze
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  asdfgh:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Compliance handles unlock
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\ntina,vienna,75\nrosa,dublin,88\nlena,sydney,60\nivy,tokyo,88\n' >"/var/tmp/w_final.dat" && grep -c , "/var/tmp/w_final.dat"; true ; } > /tmp/aux5/lambda-0ff8d.log
+            echo "gate Rollout_Prod8: $(wc -c </tmp/aux5/lambda-0ff8d.log) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'lambda-0ff8d.log'
+  Rollout_Prod8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/3epFfUUNLl
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  argMap:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: call security desk first
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; \grep -vi VERSION /etc/os-release | tail -n 3; true ; } > /tmp/aux5/thunderp4rser
+            echo "gate tweak-oauth-hang: $(wc -c </tmp/aux5/thunderp4rser) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'thunderp4rser'
+  tweak-oauth-hang:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/thunderp4rser
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  has-index:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Ask affected users mk3
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; printf '%q\n' '50/50'; true ; } > /tmp/aux5/stone
+            echo "gate full-send: $(wc -c </tmp/aux5/stone) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'stone'
+  full-send:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/3epFfUUNLl
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  BACKUP_RESOURCE_PIN_43:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: 2027 deployment
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; awk -F':' '$1 ~ /^[a-m]/{print NF}' /etc/passwd | sort -k2 -n; true ; } > /tmp/aux5/zIME
+            echo "gate API-200: $(wc -c </tmp/aux5/zIME) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'zIME'
+  API-200:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/TICKET-63041-NV
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  DEL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Reconcile the job runner in 5 chunks
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; f=${TMPDIR:-/tmp}/back.bak; seq 5 > "$f"; while read -r n; do echo $((n * n)); done < "$f"; true ; } > /tmp/aux5/vector-tenant-quark-engine
+            echo "gate promote: $(wc -c </tmp/aux5/vector-tenant-quark-engine) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'vector-tenant-quark-engine'
+  promote:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/vector-tenant-quark-engine
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  WSIPRouter:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Patch the leaderboard chapter 8
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; touch -r /etc/passwd "/var/tmp/p20250319.conf" && stat -c %Y /etc/passwd "/var/tmp/p20250319.conf"; true ; } > /tmp/aux5/north_dream_worker
+            echo "gate sirius-final: $(wc -c </tmp/aux5/north_dream_worker) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'north_dream_worker'
+  sirius-final:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/filter.cedar.receipt.velvet.coastal
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  RootedNoisePlugin:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: 400 PRINT refund
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; (typeset -i sum; sum=2*6; echo $sum); true ; } > /tmp/aux5/GlintCoinMountainToken
+            echo "gate update-session-redirect: $(wc -c </tmp/aux5/GlintCoinMountainToken) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'GlintCoinMountainToken'
+  update-session-redirect:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/3epFfUUNLl
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  ValueFunc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Dry the reagents with fresh tips
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; printf %s 'done!' | cksum | awk '{print $1}'; true ; } > /tmp/aux5/0af77f744bbc99f8ec9db883a
+            echo "gate bug-9380: $(wc -c </tmp/aux5/0af77f744bbc99f8ec9db883a) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - '0af77f744bbc99f8ec9db883a'
+  bug-9380:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/3epFfUUNLl
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  scoreFreezeListener:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: We book the purchase orders here
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; cat /etc/shells | sort -u | sed 's|.*/||'; true ; } > /tmp/aux5/plasm4_cr1ms0n
+            echo "gate teh-ci: $(wc -c </tmp/aux5/plasm4_cr1ms0n) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'plasm4_cr1ms0n'
+  teh-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/filter.cedar.receipt.velvet.coastal
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  ukim806:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Month end reviewed nightly
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; tr ':' ' ' < /etc/passwd | expand -t 6 | awk '{print NF}'; true ; } > /tmp/aux5/zQYD83
+            echo "gate verify-staging-docker-image: $(wc -c </tmp/aux5/zQYD83) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'zQYD83'
+  verify-staging-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/filter.cedar.receipt.velvet.coastal
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  Write-Arg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Snapshot A
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; printf '%s\n' "we're live" | tr a-z A-Z; true ; } > /tmp/aux5/sample0_49be
+            echo "gate node18-ship: $(wc -c </tmp/aux5/sample0_49be) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'sample0_49be'
+  node18-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/TICKET_065588
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  args_util:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: tokenizeLearningRateStep
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; compgen -k | sort | uniq | sort -u | expand -t 7; true ; } > /tmp/aux5/filter.cedar.receipt.velvet.coastal
+            echo "gate gating: $(wc -c </tmp/aux5/filter.cedar.receipt.velvet.coastal) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'filter.cedar.receipt.velvet.coastal'
+  gating:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/filter.cedar.receipt.velvet.coastal
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  idx_add:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Customise the CVE list
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; printf 'record\t50\nstats\t82\npolicy\t51\nrole\t10\n' > "/var/tmp/drawer_game_metrics.txt" && cut -f1 "/var/tmp/drawer_game_metrics.txt"; true ; } > /tmp/aux5/xx_beb71fec6e3e6fc
+            echo "gate q1-cleanup: $(wc -c </tmp/aux5/xx_beb71fec6e3e6fc) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'xx_beb71fec6e3e6fc'
+  q1-cleanup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/filter.cedar.receipt.velvet.coastal
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  zackzack:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Just diff the thing
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; cut -d'=' -f2- /etc/os-release | sort | tail -n 4; true ; } > /tmp/aux5/iter-21q
+            echo "gate v9-rc: $(wc -c </tmp/aux5/iter-21q) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'iter-21q'
+  v9-rc:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/3epFfUUNLl
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  STUB_LULLABY_SELECT_MULTI:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: HACK screenshot
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; grep -w -o Cached /proc/meminfo|nl; true ; } > /tmp/aux5/TICKET-63041-NV
+            echo "gate wip-dashboard: $(wc -c </tmp/aux5/TICKET-63041-NV) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'TICKET-63041-NV'
+  wip-dashboard:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/TICKET-63041-NV
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+  defchannel:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Last but not least wind down the circuit breaker
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; eval "msg=\$HOME"; echo $msg; true ; } > /tmp/aux5/c0
+            echo "gate rollout: $(wc -c </tmp/aux5/c0) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'c0'
+  rollout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Record gate output
+          command: |
+            cat /tmp/aux5/3epFfUUNLl
+      - run:
+          name: Fetch main branch
+          command: git clone --depth 2 -q --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Unpack vendor data
+          command: tar xzvf box-pending.tgz
+      - run:
+          command: nice -n 0 ./encode-gateway
+
+  depthFn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Audit conveyor by noon
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; echo x >"/tmp/coral_0111.conf" && ln -f "/tmp/coral_0111.conf" /tmp/table.log && stat -c %h "/tmp/coral_0111.conf"; true ; } > /tmp/aux5/db8149ea-9c77-a764
+            echo "gate rm-session: $(wc -c </tmp/aux5/db8149ea-9c77-a764) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'db8149ea-9c77-a764'
+  PulseSnapshot:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: misc 2
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; printf -v home_dir "%(%F)T" -1; echo $home_dir; true ; } > /tmp/aux5/thunderp4rser
+            echo "gate tweak-oauth-hang: $(wc -c </tmp/aux5/thunderp4rser) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'thunderp4rser'
+  DIALOG_H_:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: approval HELP
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; for item in otter cat duck wolf zebra whale; do echo "item: $item"; done|sort -r; true ; } > /tmp/aux5/vector-tenant-quark-engine
+            echo "gate promote: $(wc -c </tmp/aux5/vector-tenant-quark-engine) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'vector-tenant-quark-engine'
+  thx:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Wilco checkpoint the slow query log
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 2 -name "*" -exec ls -ld {} + 2>/dev/null | cat -n; true ; } > /tmp/aux5/savannashardbronze
+            echo "gate java17-vet: $(wc -c </tmp/aux5/savannashardbronze) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'savannashardbronze'
+  passwordpasswordnormal:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Unmute the conveyor
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; grep -h vendor_id /proc/cpuinfo | nl; true ; } > /tmp/aux5/moor.spark.atoll
+            echo "gate v5-canary3: $(wc -c </tmp/aux5/moor.spark.atoll) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'moor.spark.atoll'
+  setup_param_test:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Verbosely proofread the product tour
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\nkate,madrid,41\nnina,berlin,48\nana,prague,56\nyuki,delhi,85\n' >"/tmp/icon01.csv" && cut -d, -f2 "/tmp/icon01.csv" | tail -n +2 | sort -u; true ; } > /tmp/aux5/145.71
+            echo "gate push-it: $(wc -c </tmp/aux5/145.71) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - '145.71'
+  yoyo-timer-tuple:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/aux5
+      - run:
+          name: Remit the vendor payments and sign
+          command: |
+            mkdir -p /tmp/aux5
+            { set +o pipefail 2>/dev/null; sed 's/^\s\+//' /etc/resolv.conf | cat -A | head --lines=5; true ; } > /tmp/aux5/ux.c9_DNS_5177
+            echo "gate beta-v7: $(wc -c </tmp/aux5/ux.c9_DNS_5177) bytes total"
+      - persist_to_workspace:
+          root: /tmp/aux5
+          paths:
+            - 'ux.c9_DNS_5177'
+workflows:
+  main:
+    jobs:
+      - q22007
+      - Write-Arg
+      - validate-staging-release-candidate:
+          requires:
+            - q22007
+            - Write-Arg
+      - node18-ship:
+          requires:
+            - q22007
+            - Write-Arg
+      - sanity:
+          requires:
+            - q22007
+            - Write-Arg
+      - uuidMergeCheckout
+      - depthFn:
+          requires:
+            - uuidMergeCheckout
+      - rm-session:
+          requires:
+            - depthFn
+      - argMap:
+          requires:
+            - depthFn
+      - PulseSnapshot:
+          requires:
+            - argMap
+      - tweak-oauth-hang:
+          requires:
+            - PulseSnapshot
+      - DEL:
+          requires:
+            - PulseSnapshot
+      - DIALOG_H_:
+          requires:
+            - DEL
+      - promote:
+          requires:
+            - DIALOG_H_
+      - wilson-brad-2:
+          requires:
+            - DIALOG_H_
+      - thx:
+          requires:
+            - wilson-brad-2
+      - java17-vet:
+          requires:
+            - thx
+      - step72493:
+          requires:
+            - thx
+      - passwordpasswordnormal:
+          requires:
+            - step72493
+      - v5-canary3:
+          requires:
+            - passwordpasswordnormal
+      - lemon-tempo:
+          requires:
+            - passwordpasswordnormal
+      - setup_param_test:
+          requires:
+            - lemon-tempo
+      - push-it:
+          requires:
+            - setup_param_test
+      - thulbilslinta:
+          requires:
+            - setup_param_test
+      - yoyo-timer-tuple:
+          requires:
+            - thulbilslinta
+      - beta-v7:
+          requires:
+            - yoyo-timer-tuple
+      - STUB_LULLABY_SELECT_MULTI
+      - BACKUP_RESOURCE_PIN_43
+      - wip-dashboard:
+          requires:
+            - STUB_LULLABY_SELECT_MULTI
+            - BACKUP_RESOURCE_PIN_43
+      - API-200:
+          requires:
+            - STUB_LULLABY_SELECT_MULTI
+            - BACKUP_RESOURCE_PIN_43
+      - py310-vet:
+          requires:
+            - STUB_LULLABY_SELECT_MULTI
+            - BACKUP_RESOURCE_PIN_43
+      - args_util
+      - idx_add
+      - MustIcon
+      - gating:
+          requires:
+            - args_util
+            - idx_add
+            - MustIcon
+      - q1-cleanup:
+          requires:
+            - args_util
+            - idx_add
+            - MustIcon
+      - HOOK_DEV:
+          requires:
+            - args_util
+            - idx_add
+            - MustIcon
+      - strated-60:
+          requires:
+            - args_util
+            - idx_add
+            - MustIcon
+      - sirius-final:
+          requires:
+            - args_util
+            - idx_add
+            - MustIcon
+      - verify-staging-docker-image:
+          requires:
+            - args_util
+            - idx_add
+            - MustIcon
+      - teh-ci:
+          requires:
+            - args_util
+            - idx_add
+            - MustIcon
+      - RunService:
+          requires:
+            - args_util
+            - idx_add
+            - MustIcon
+      - package:
+          requires:
+            - args_util
+            - idx_add
+            - MustIcon
+      - mitten-jigsaw
+      - ValueFunc
+      - add-retry:
+          requires:
+            - mitten-jigsaw
+            - ValueFunc
+      - bug-9380:
+          requires:
+            - mitten-jigsaw
+            - ValueFunc
+      - charlie-5:
+          requires:
+            - mitten-jigsaw
+            - ValueFunc
+      - v9-rc:
+          requires:
+            - mitten-jigsaw
+            - ValueFunc
+      - rollout:
+          requires:
+            - mitten-jigsaw
+            - ValueFunc
+      - update-session-redirect:
+          requires:
+            - mitten-jigsaw
+            - ValueFunc
+      - full-send:
+          requires:
+            - mitten-jigsaw
+            - ValueFunc
+      - Rollout_Prod8:
+          requires:
+            - mitten-jigsaw
+            - ValueFunc
